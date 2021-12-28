@@ -1,0 +1,15 @@
+name: project_use_custom_library
+description: A simple command-line application.
+version: 1.0.0
+# homepage: https://www.example.com
+
+environment:
+  sdk: '>=2.15.1 <3.0.0'
+
+
+dependencies:
+  c4fmath:
+    path: D:/Coding/SouceCode/Flutter/Code4func_Flutter/bai12_viet_library/c4fmath
+
+dev_dependencies:
+  lints: ^1.0.0
