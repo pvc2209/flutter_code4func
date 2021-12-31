@@ -112,7 +112,7 @@ void main(List<String> arguments) {
   */
 
   /*
-  // Stream controller - Class choh phép ta thêm tự thêm dữ liệu vào stream ** QUAN TRỌNG
+  // Stream controller - Class cho phép ta thêm tự thêm dữ liệu vào stream ** QUAN TRỌNG
   StreamController<int> controller = StreamController();
 
   // Listen data từ stream
