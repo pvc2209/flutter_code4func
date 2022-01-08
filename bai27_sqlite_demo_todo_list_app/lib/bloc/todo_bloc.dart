@@ -7,9 +7,10 @@ import 'package:bai27_sqlite_demo_todo_list_app/db/todo_table.dart';
 import 'package:bai27_sqlite_demo_todo_list_app/event/add_todo_event.dart';
 import 'package:bai27_sqlite_demo_todo_list_app/event/delete_todo_event.dart';
 import 'package:bai27_sqlite_demo_todo_list_app/model/todo.dart';
+import 'package:bai27_sqlite_demo_todo_list_app/repo/todo_repo.dart';
 
 class TodoBloc extends BaseBloc {
-  final _todoTable = TodoTable();
+  final _todoRepo = TodoRepo();
 
   final StreamController<List<Todo>> _todoListStreamController =
       StreamController();
@@ -21,21 +22,21 @@ class TodoBloc extends BaseBloc {
   final _randomInt = Random();
 
   void initData() async {
-    _todoListData = await _todoTable.selectAllTodo();
+    _todoListData = await _todoRepo.initData();
 
     _todoListStreamController.sink.add(_todoListData);
   }
 
   void _addTodo(Todo todo) async {
     // insert to db
-    await _todoTable.insertTodo(todo);
+    await _todoRepo.insertTodo(todo);
 
     _todoListData.add(todo);
     _todoListStreamController.sink.add(_todoListData);
   }
 
   void _deleteTodo(Todo todo) async {
-    await _todoTable.deleteTodo(todo);
+    await _todoRepo.deleteTodo(todo);
 
     _todoListData.remove(todo);
     _todoListStreamController.sink.add(_todoListData);
