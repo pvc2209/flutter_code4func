@@ -12,4 +12,11 @@ class Todo {
 
   String get content => _content;
   // set content(String value) => _content = value;
+
+  Map<String, dynamic> toMap() {
+    return {
+      "id": _id,
+      "content": _content,
+    };
+  }
 }

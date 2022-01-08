@@ -13,6 +13,15 @@ class TodoList extends StatefulWidget {
 
 class _TodoListState extends State<TodoList> {
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    var bloc = Provider.of<TodoBloc>(context);
+
+    bloc.initData();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Consumer<TodoBloc>(
@@ -25,7 +34,7 @@ class _TodoListState extends State<TodoList> {
                     itemCount: snapshot.data?.length,
                     itemBuilder: (context, index) {
                       return ListTile(
-                        title: Text("Item ${snapshot.data![index].content}"),
+                        title: Text(snapshot.data![index].content),
                         trailing: IconButton(
                           icon: Icon(
                             Icons.delete,
@@ -39,8 +48,6 @@ class _TodoListState extends State<TodoList> {
                       );
                     },
                   );
-                case ConnectionState.none:
-                  break;
                 case ConnectionState.waiting:
                   return const Center(
                     child: Text(
@@ -48,6 +55,8 @@ class _TodoListState extends State<TodoList> {
                       style: TextStyle(fontSize: 30),
                     ),
                   );
+                case ConnectionState.none:
+                  break;
                 case ConnectionState.done:
                   break;
               }

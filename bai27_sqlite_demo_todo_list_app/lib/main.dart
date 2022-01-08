@@ -1,10 +1,13 @@
 import 'package:bai27_sqlite_demo_todo_list_app/bloc/todo_bloc.dart';
+import 'package:bai27_sqlite_demo_todo_list_app/db/todo_database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'todo/todo_list_container.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await TodoDatabase.instance.init();
   runApp(const MyApp());
 }
 
