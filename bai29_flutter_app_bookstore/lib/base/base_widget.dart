@@ -25,18 +25,15 @@ class PageContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
           title,
           style: TextStyle(color: AppColor.blue),
         ),
       ),
-      body: MultiProvider(
-        providers: [
-          ...di, // Do di, bloc là 1 list, mà providers [] nhận vào là 1 đối tượng SingleChildWidget
-          ...bloc, // => Dùng dấu ... để truyền các phần tử của di, bloc vào providers []
-        ],
-        child: child,
-      ),
+      // Tạm thời remove multiprovider thì mới chạy được
+      // vì list truyền vào cần it nhất 1 phần tử
+      body: child,
     );
   }
 }
