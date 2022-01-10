@@ -11,7 +11,8 @@ class SPref {
   }
 
   // Theo suy luận thì chỗ này kiểu trả về nên là Future<dynamic>
-  dynamic get(String key) async {
+  // test thử thì đúng là Future<dynamic> thật :)
+  Future<dynamic> get(String key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     return prefs.get(key);

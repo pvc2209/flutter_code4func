@@ -11,7 +11,7 @@ class PageContainer extends StatelessWidget {
   // SingleChildWidget là 1 class của provider, để truyền vào MultiProvider ở bên dưới,
   // các phần tử của list này là các state model như là Counter chẳng hạn...
   final List<SingleChildWidget> bloc;
-  final List<SingleChildWidget> di;
+  final List<SingleChildWidget> di; // di là viết tắt của dependency inject
 
   const PageContainer({
     Key? key,
@@ -21,6 +21,9 @@ class PageContainer extends StatelessWidget {
     required this.di,
   }) : super(key: key);
 
+  // Lúc trước MultiProvider không hoạt động được không phải là do di, bloc
+  // chưa có các phần tử mà là do child chưa được gán,
+  // chả hiểu sao lúc ấy không gán child: child mà view vẫn hiển thị lên :v
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,9 +34,13 @@ class PageContainer extends StatelessWidget {
           style: TextStyle(color: AppColor.blue),
         ),
       ),
-      // Tạm thời remove multiprovider thì mới chạy được
-      // vì list truyền vào cần it nhất 1 phần tử
-      body: child,
+      body: MultiProvider(
+        providers: [
+          ...di,
+          ...bloc,
+        ],
+        child: child,
+      ),
     );
   }
 }

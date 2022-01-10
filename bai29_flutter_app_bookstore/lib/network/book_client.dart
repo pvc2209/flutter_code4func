@@ -1,8 +1,10 @@
 import 'package:dio/dio.dart';
 
 class BookClient {
+  // Khi request đến localhost khi run bằng Android Emulator
+  // thì phải thay localhost thành 10.0.2.2
   static final BaseOptions _options = BaseOptions(
-    baseUrl: "http://localhost:8000",
+    baseUrl: "http://10.0.2.2:8000",
     connectTimeout: 5000,
     receiveTimeout: 3000,
   );

@@ -1,40 +1,68 @@
 import 'package:bai29_flutter_app_bookstore/base/base_widget.dart';
+import 'package:bai29_flutter_app_bookstore/data/remote/user_service.dart';
+import 'package:bai29_flutter_app_bookstore/data/repo/user_repo.dart';
+import 'package:bai29_flutter_app_bookstore/event/signin_event.dart';
+import 'package:bai29_flutter_app_bookstore/module/signin/sign_bloc.dart';
 import 'package:bai29_flutter_app_bookstore/shared/widget/app_color.dart';
 import 'package:bai29_flutter_app_bookstore/shared/widget/normal_button.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SignInPage extends StatelessWidget {
   const SignInPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const PageContainer(
+    return PageContainer(
       title: "Sign In",
       bloc: [],
-      di: [],
+      di: [
+        Provider<UserService>(
+          create: (context) => UserService(),
+        ),
+        ProxyProvider<UserService, UserRepo>(
+          update: (context, userService, previous) => UserRepo(
+            userService: userService,
+          ),
+        ),
+      ],
       child: SignInFormWidget(),
     );
   }
 }
 
-// next 27p30
 class SignInFormWidget extends StatelessWidget {
-  const SignInFormWidget({Key? key}) : super(key: key);
+  final _txtPhoneController = TextEditingController();
+  final _txtPassController = TextEditingController();
+
+  SignInFormWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _buildPhoneField(),
-          _buildPassField(),
-          NormalButton(
-            onPressed: () {},
-          ),
-          _buildFooter(),
-        ],
+    return Provider<SignInBloc>(
+      create: (context) => SignInBloc(
+        userRepo: Provider.of<UserRepo>(context, listen: false),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 25),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildPhoneField(),
+            _buildPassField(),
+            Consumer<SignInBloc>(
+              builder: (context, bloc, child) => NormalButton(
+                onPressed: () {
+                  bloc.event.add(SignInEvent(
+                    phone: _txtPhoneController.text,
+                    pass: _txtPassController.text,
+                  ));
+                },
+              ),
+            ),
+            _buildFooter(),
+          ],
+        ),
       ),
     );
   }
@@ -61,6 +89,7 @@ class SignInFormWidget extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 15.0),
       child: TextFormField(
+        controller: _txtPhoneController,
         cursorColor: Colors.black,
         keyboardType: TextInputType.phone,
         decoration: InputDecoration(
@@ -82,6 +111,7 @@ class SignInFormWidget extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 25.0),
       child: TextFormField(
+        controller: _txtPassController,
         obscureText: true,
         cursorColor: Colors.black,
         decoration: InputDecoration(
