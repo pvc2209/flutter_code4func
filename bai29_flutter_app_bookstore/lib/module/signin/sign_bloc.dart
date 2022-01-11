@@ -1,3 +1,14 @@
+// Luồng dữ liệu sẽ đi như sau:
+// PhoneField gửi dữ liệu vào phoneStream thông qua phoneSink.
+// nhưng dữ liệu không đi trực tiếp vào phoneStream và nó lại đi
+// vào phoneValidation(StreamTransformer),
+// rồi StreamTransformer sẽ xử lý cái data đó rồi sẽ phát lại data tới phoneStream
+// thông qua cái sink của chính nó (sink của StreamTransformer).
+
+// Mà PhoneField lại đang lắng nghe phoneStream đo đó, nó sẽ nhận được dữ liệu đã
+// được xử lý
+// Vậy PhoneField vừa phát ra data và vừa nhận data, nhưng data sẽ được xử lý ở trong bloc
+
 import 'dart:async';
 
 import 'package:bai29_flutter_app_bookstore/base/base_bloc.dart';
@@ -42,7 +53,7 @@ class SignInBloc extends BaseBloc {
     sink.add("Password too short");
   });
 
-  // Để nhận dữ liệu vào stream (lắng nghe sự kiện)
+  // Để nhận dữ liệu từ stream (lắng nghe sự kiện)
   Stream<String> get phoneStream =>
       _phoneSubject.stream.transform(phoneValidation);
 
