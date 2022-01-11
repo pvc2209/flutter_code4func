@@ -3,7 +3,7 @@ import 'package:bai29_flutter_app_bookstore/shared/widget/app_color.dart';
 import 'package:flutter/material.dart';
 
 class NormalButton extends StatelessWidget {
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   const NormalButton({Key? key, required this.onPressed}) : super(key: key);
 
   @override

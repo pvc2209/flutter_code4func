@@ -45,23 +45,16 @@ class SignInFormWidget extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _buildPhoneField(),
-            _buildPassField(),
-            Consumer<SignInBloc>(
-              builder: (context, bloc, child) => NormalButton(
-                onPressed: () {
-                  bloc.event.add(SignInEvent(
-                    phone: _txtPhoneController.text,
-                    pass: _txtPassController.text,
-                  ));
-                },
-              ),
-            ),
-            _buildFooter(),
-          ],
+        child: Consumer<SignInBloc>(
+          builder: (context, bloc, child) => Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _buildPhoneField(bloc),
+              _buildPassField(bloc),
+              _buildSignInButton(bloc),
+              _buildFooter(),
+            ],
+          ),
         ),
       ),
     );
@@ -85,45 +78,84 @@ class SignInFormWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildPhoneField() {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 15.0),
-      child: TextFormField(
-        controller: _txtPhoneController,
-        cursorColor: Colors.black,
-        keyboardType: TextInputType.phone,
-        decoration: InputDecoration(
-          icon: Icon(
-            Icons.phone,
-            color: AppColor.blue,
-          ),
-          hintText: "(+84) 394773456",
-          labelText: "Phone",
-          labelStyle: TextStyle(
-            color: AppColor.blue,
+  Widget _buildPhoneField(SignInBloc bloc) {
+    return StreamProvider(
+      initialData: "",
+      create: (context) => bloc.phoneStream,
+      child: Consumer<String>(
+        builder: (context, message, child) => Container(
+          margin: const EdgeInsets.only(bottom: 15.0),
+          child: TextField(
+            onChanged: (text) {
+              bloc.phoneSink.add(text);
+            },
+            controller: _txtPhoneController,
+            cursorColor: Colors.black,
+            // keyboardType: TextInputType.phone,
+            decoration: InputDecoration(
+              errorText: message.isEmpty ? null : message,
+              icon: Icon(
+                Icons.phone,
+                color: AppColor.blue,
+              ),
+              hintText: "(+84) 394773456",
+              labelText: "Phone",
+              labelStyle: TextStyle(
+                color: AppColor.blue,
+              ),
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildPassField() {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 25.0),
-      child: TextFormField(
-        controller: _txtPassController,
-        obscureText: true,
-        cursorColor: Colors.black,
-        decoration: InputDecoration(
-          icon: Icon(
-            Icons.lock,
-            color: AppColor.blue,
+  Widget _buildPassField(SignInBloc bloc) {
+    return StreamProvider(
+      initialData: "",
+      create: (context) => bloc.passStream,
+      child: Consumer<String>(
+        builder: (context, message, child) => Container(
+          margin: const EdgeInsets.only(bottom: 25.0),
+          child: TextField(
+            onChanged: (text) {
+              bloc.passSink.add(text);
+            },
+            controller: _txtPassController,
+            obscureText: true,
+            cursorColor: Colors.black,
+            decoration: InputDecoration(
+              errorText: message.isEmpty ? null : message,
+              icon: Icon(
+                Icons.lock,
+                color: AppColor.blue,
+              ),
+              hintText: "Password",
+              labelText: "Password",
+              labelStyle: TextStyle(
+                color: AppColor.blue,
+              ),
+            ),
           ),
-          hintText: "Password",
-          labelText: "Password",
-          labelStyle: TextStyle(
-            color: AppColor.blue,
-          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSignInButton(SignInBloc bloc) {
+    return StreamProvider<bool>(
+      initialData: false,
+      create: (context) => bloc.btnStream,
+      child: Consumer<bool>(
+        builder: (context, enable, child) => NormalButton(
+          onPressed: enable
+              ? () {
+                  bloc.event.add(SignInEvent(
+                    phone: _txtPhoneController.text,
+                    pass: _txtPassController.text,
+                  ));
+                }
+              : null,
         ),
       ),
     );
