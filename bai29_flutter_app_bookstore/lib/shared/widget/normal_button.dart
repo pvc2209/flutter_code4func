@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 
 class NormalButton extends StatelessWidget {
   final VoidCallback? onPressed;
-  const NormalButton({Key? key, required this.onPressed}) : super(key: key);
+  final String title;
+
+  const NormalButton({Key? key, this.onPressed, required this.title})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +21,7 @@ class NormalButton extends StatelessWidget {
         ),
       ),
       child: Text(
-        "Sign In",
+        title,
         style: BtnStyle.normal(),
       ),
     );

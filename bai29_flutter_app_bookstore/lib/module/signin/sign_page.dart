@@ -15,7 +15,7 @@ class SignInPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return PageContainer(
       title: "Sign In",
-      bloc: [],
+      bloc: const [],
       di: [
         Provider<UserService>(
           create: (context) => UserService(),
@@ -26,16 +26,28 @@ class SignInPage extends StatelessWidget {
           ),
         ),
       ],
-      child: SignInFormWidget(),
+      child: const SignInFormWidget(),
     );
   }
 }
 
-class SignInFormWidget extends StatelessWidget {
+class SignInFormWidget extends StatefulWidget {
+  const SignInFormWidget({Key? key}) : super(key: key);
+
+  @override
+  State<SignInFormWidget> createState() => _SignInFormWidgetState();
+}
+
+class _SignInFormWidgetState extends State<SignInFormWidget> {
   final _txtPhoneController = TextEditingController();
   final _txtPassController = TextEditingController();
 
-  SignInFormWidget({Key? key}) : super(key: key);
+  @override
+  void dispose() {
+    _txtPhoneController.dispose();
+    _txtPassController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,20 +73,22 @@ class SignInFormWidget extends StatelessWidget {
   }
 
   Widget _buildFooter() {
-    return InkWell(
-      child: Container(
-        margin: const EdgeInsets.only(top: 30.0),
-        padding: const EdgeInsets.all(10.0),
-        child: Text(
-          "Đăng ký tài khoản",
-          style: TextStyle(
-            fontSize: 17,
-            color: AppColor.blue,
+    return Container(
+      margin: const EdgeInsets.only(top: 30.0),
+      child: InkWell(
+        child: Container(
+          padding: const EdgeInsets.all(10.0),
+          child: Text(
+            "Đăng ký tài khoản",
+            style: TextStyle(
+              fontSize: 17,
+              color: AppColor.blue,
+            ),
           ),
         ),
+        borderRadius: BorderRadius.circular(10.0),
+        onTap: () => Navigator.pushNamed(context, "/sign-up"),
       ),
-      borderRadius: BorderRadius.circular(10.0),
-      onTap: () {},
     );
   }
 
@@ -148,6 +162,7 @@ class SignInFormWidget extends StatelessWidget {
       create: (context) => bloc.btnStream,
       child: Consumer<bool>(
         builder: (context, enable, child) => NormalButton(
+          title: "Sign In",
           onPressed: enable
               ? () {
                   bloc.event.add(SignInEvent(

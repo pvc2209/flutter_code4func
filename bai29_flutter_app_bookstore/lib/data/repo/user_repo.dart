@@ -27,4 +27,23 @@ class UserRepo {
 
     throw Exception("Đăng nhập thất bại");
   }
+
+  Future<UserData> signUp(String displayName, String phone, String pass) async {
+    try {
+      var response = await _userService.signUp(displayName, phone, pass);
+
+      if (response.data["code"] == 200) {
+        var userData = UserData.fromJson(response.data["data"]);
+        SPref.instance.set(SPrefCache.KEY_TOKEN, userData.token);
+
+        return userData;
+      }
+    } on DioError catch (e) {
+      // print(e);
+    } catch (e) {
+      // print(e);
+    }
+
+    throw Exception("Đăng ký thất bại");
+  }
 }

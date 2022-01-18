@@ -1,3 +1,13 @@
 import 'package:bai29_flutter_app_bookstore/base/base_event.dart';
 
-class SignUpEvent extends BaseEvent {}
+class SignUpEvent extends BaseEvent {
+  String displayName;
+  String phone;
+  String pass;
+
+  SignUpEvent({
+    required this.displayName,
+    required this.phone,
+    required this.pass,
+  });
+}

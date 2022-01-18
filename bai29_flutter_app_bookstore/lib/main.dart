@@ -1,4 +1,5 @@
 import 'package:bai29_flutter_app_bookstore/module/signin/sign_page.dart';
+import 'package:bai29_flutter_app_bookstore/module/signup/signup_page.dart';
 import 'package:bai29_flutter_app_bookstore/shared/widget/app_color.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +18,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: AppColor.yellow,
       ),
-      home: const SignInPage(),
+      // home: const SignInPage(),
+      initialRoute: "/",
+      routes: {
+        "/": (context) => const SignInPage(),
+        "/sign-in": (context) => const SignInPage(),
+        "/sign-up": (context) => const SignUpPage(),
+      },
     );
   }
 }

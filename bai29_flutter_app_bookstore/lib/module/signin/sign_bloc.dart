@@ -56,6 +56,10 @@ class SignInBloc extends BaseBloc {
   // Để nhận dữ liệu từ stream (lắng nghe sự kiện)
   Stream<String> get phoneStream =>
       _phoneSubject.stream.transform(phoneValidation);
+  // Khi thử xóa .transform(phoneValidation) đi thì dữ liệu không bị transform nữa
+  // thì dữ liệu mà PhoneField nhận được cũng chính là dữ liệu nhập vào
+  // chứng tỏ PhoneField dùng phoneStream để vừa phát ra data vừa nhận data
+  // trên cùng 1 stream. transform(phoneValidation) sẽ là cái đứng giữa để validate data
 
   // Để đẩy dữ liệu(event) vào stream
   Sink<String> get phoneSink => _phoneSubject.sink;
@@ -87,9 +91,6 @@ class SignInBloc extends BaseBloc {
       case SignInEvent:
         handleSignIn(event as SignInEvent);
         break;
-      case SignUpEvent:
-        handleSignUp(event as SignUpEvent);
-        break;
     }
   }
 
@@ -101,8 +102,6 @@ class SignInBloc extends BaseBloc {
       },
     );
   }
-
-  void handleSignUp(SignUpEvent event) {}
 
   @override
   void dispose() {
