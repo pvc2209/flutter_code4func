@@ -6,6 +6,7 @@ import 'package:provider/single_child_widget.dart';
 class PageContainer extends StatelessWidget {
   final String title;
   final Widget child;
+  final List<Widget>? actions;
 
   // SingleChildCloneableWidget đã bị đổi thành SingleChildWidget
   // SingleChildWidget là 1 class của provider, để truyền vào MultiProvider ở bên dưới,
@@ -19,6 +20,7 @@ class PageContainer extends StatelessWidget {
     required this.child,
     required this.bloc,
     required this.di,
+    this.actions,
   }) : super(key: key);
 
   // Lúc trước MultiProvider không hoạt động được không phải là do di, bloc
@@ -33,6 +35,7 @@ class PageContainer extends StatelessWidget {
           title,
           style: TextStyle(color: AppColor.blue),
         ),
+        actions: actions,
       ),
       body: MultiProvider(
         providers: [
@@ -44,3 +47,18 @@ class PageContainer extends StatelessWidget {
     );
   }
 }
+
+// class này có vẻ thừa
+/* class NavigatorProvider extends StatelessWidget {
+  const NavigatorProvider({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Stack(
+        children: [],
+      ),
+    );
+  }
+}
+ */

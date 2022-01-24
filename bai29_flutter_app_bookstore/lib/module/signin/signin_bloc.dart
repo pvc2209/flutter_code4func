@@ -14,8 +14,10 @@ import 'dart:async';
 import 'package:bai29_flutter_app_bookstore/base/base_bloc.dart';
 import 'package:bai29_flutter_app_bookstore/base/base_event.dart';
 import 'package:bai29_flutter_app_bookstore/data/repo/user_repo.dart';
+import 'package:bai29_flutter_app_bookstore/event/signin_success_event.dart';
 import 'package:bai29_flutter_app_bookstore/event/signin_event.dart';
-import 'package:bai29_flutter_app_bookstore/event/signup_event.dart';
+import 'package:bai29_flutter_app_bookstore/event/signin_fail_event.dart';
+import 'package:bai29_flutter_app_bookstore/shared/model/user_data.dart';
 import 'package:bai29_flutter_app_bookstore/shared/widget/validation.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -26,6 +28,8 @@ class SignInBloc extends BaseBloc {
   final _phoneSubject = BehaviorSubject<String>();
   final _passSubject = BehaviorSubject<String>();
   final _btnSubject = BehaviorSubject<bool>();
+
+  final _userSubject = BehaviorSubject<UserData>();
 
   final UserRepo _userRepo;
 
@@ -72,6 +76,9 @@ class SignInBloc extends BaseBloc {
   Stream<bool> get btnStream => _btnSubject.stream;
   Sink<bool> get btnSink => _btnSubject.sink;
 
+  Stream<UserData> get userStream => _userSubject.stream;
+  Sink<UserData> get userSink => _userSubject.sink;
+
   void validateForm() {
     // Rx.combineLatest2: Merges the given Streams into a single Stream sequence by using the [combiner] function whenever any of the stream sequences emits an item.
     // The Stream will not emit until all streams have emitted at least one item.
@@ -95,10 +102,20 @@ class SignInBloc extends BaseBloc {
   }
 
   void handleSignIn(SignInEvent event) {
+    btnSink.add(false);
+    loadingSink.add(true);
+
     _userRepo.signIn(event.phone, event.pass).then(
-      (userData) => print(userData.displayName),
+      (userData) {
+        processEventSink.add(SignInSuccessEvent(userData));
+      },
       onError: (e) {
-        print(e);
+        Future.delayed(const Duration(seconds: 3), () {
+          loadingSink.add(false);
+          processEventSink.add(SignInFailEvent(e.toString()));
+
+          btnSink.add(true);
+        });
       },
     );
   }
@@ -109,6 +126,7 @@ class SignInBloc extends BaseBloc {
     _passSubject.close();
     _btnSubject.close();
 
+    _userSubject.close();
     super.dispose();
   }
 }

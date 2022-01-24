@@ -1,9 +1,14 @@
+import 'package:bai29_flutter_app_bookstore/base/base_event.dart';
 import 'package:bai29_flutter_app_bookstore/base/base_widget.dart';
 import 'package:bai29_flutter_app_bookstore/data/remote/user_service.dart';
 import 'package:bai29_flutter_app_bookstore/data/repo/user_repo.dart';
+import 'package:bai29_flutter_app_bookstore/event/signin_success_event.dart';
 import 'package:bai29_flutter_app_bookstore/event/signin_event.dart';
-import 'package:bai29_flutter_app_bookstore/module/signin/sign_bloc.dart';
+import 'package:bai29_flutter_app_bookstore/event/signin_fail_event.dart';
+import 'package:bai29_flutter_app_bookstore/module/signin/signin_bloc.dart';
 import 'package:bai29_flutter_app_bookstore/shared/widget/app_color.dart';
+import 'package:bai29_flutter_app_bookstore/shared/widget/bloc_listener.dart';
+import 'package:bai29_flutter_app_bookstore/shared/widget/loading_task.dart';
 import 'package:bai29_flutter_app_bookstore/shared/widget/normal_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -42,6 +47,22 @@ class _SignInFormWidgetState extends State<SignInFormWidget> {
   final _txtPhoneController = TextEditingController();
   final _txtPassController = TextEditingController();
 
+  void handleEvent(BaseEvent event) {
+    if (event is SignInSuccessEvent) {
+      Navigator.pushReplacementNamed(context, "/home");
+      return;
+    }
+
+    if (event is SignInFailEvent) {
+      final snackBar = SnackBar(
+        content: Text(event.errMessage),
+        backgroundColor: Colors.red,
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
+
   @override
   void dispose() {
     _txtPhoneController.dispose();
@@ -58,14 +79,20 @@ class _SignInFormWidgetState extends State<SignInFormWidget> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25),
         child: Consumer<SignInBloc>(
-          builder: (context, bloc, child) => Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _buildPhoneField(bloc),
-              _buildPassField(bloc),
-              _buildSignInButton(bloc),
-              _buildFooter(),
-            ],
+          builder: (context, bloc, child) => BlocListener<SignInBloc>(
+            listener: handleEvent,
+            child: LoadingTask(
+              bloc: bloc,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _buildPhoneField(bloc),
+                  _buildPassField(bloc),
+                  _buildSignInButton(bloc),
+                  _buildFooter(),
+                ],
+              ),
+            ),
           ),
         ),
       ),

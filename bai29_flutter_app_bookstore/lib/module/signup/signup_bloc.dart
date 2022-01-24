@@ -4,6 +4,8 @@ import 'package:bai29_flutter_app_bookstore/base/base_bloc.dart';
 import 'package:bai29_flutter_app_bookstore/base/base_event.dart';
 import 'package:bai29_flutter_app_bookstore/data/repo/user_repo.dart';
 import 'package:bai29_flutter_app_bookstore/event/signup_event.dart';
+import 'package:bai29_flutter_app_bookstore/event/signup_fail_event.dart';
+import 'package:bai29_flutter_app_bookstore/event/signup_success_event.dart';
 import 'package:bai29_flutter_app_bookstore/shared/widget/validation.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -94,10 +96,19 @@ class SignUpBloc extends BaseBloc {
   }
 
   void handleSignUp(SignUpEvent event) {
+    btnSink.add(false);
+    loadingSink.add(true);
+
     _userRepo.signUp(event.displayName, event.phone, event.pass).then(
-      (userData) => print(userData.displayName),
+      (userData) {
+        processEventSink.add(SignUpSuccessEvent(userData));
+      },
       onError: (e) {
-        print(e);
+        loadingSink.add(false);
+
+        processEventSink.add(SignUpFailEvent(e.toString()));
+
+        btnSink.add(true);
       },
     );
   }

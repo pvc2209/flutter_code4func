@@ -25,7 +25,8 @@ class UserRepo {
       // print(e);
     }
 
-    throw Exception("Đăng nhập thất bại");
+    // throw Exception("Đăng nhập thất bại");
+    return Future.error('Đăng nhập thất bại');
   }
 
   Future<UserData> signUp(String displayName, String phone, String pass) async {
@@ -44,6 +45,6 @@ class UserRepo {
       // print(e);
     }
 
-    throw Exception("Đăng ký thất bại");
+    return Future.error('Đăng ký thất bại');
   }
 }

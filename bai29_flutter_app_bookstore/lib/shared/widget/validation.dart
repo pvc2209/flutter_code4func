@@ -6,7 +6,7 @@ class Validation {
   }
 
   static bool isPassValid(String pass) {
-    return pass.length > 6;
+    return pass.length >= 6;
   }
 
   static bool isDisplayNameValid(String displayName) {
