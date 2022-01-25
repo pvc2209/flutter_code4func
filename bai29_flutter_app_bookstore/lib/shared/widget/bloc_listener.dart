@@ -1,6 +1,5 @@
 import 'package:bai29_flutter_app_bookstore/base/base_bloc.dart';
 import 'package:bai29_flutter_app_bookstore/base/base_event.dart';
-import 'package:bai29_flutter_app_bookstore/module/signin/signin_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -28,7 +27,7 @@ class _BlocListenerState<T> extends State<BlocListener> {
 
   @override
   Widget build(BuildContext context) {
-    // Chỗ này cần ? thì initialData mới có thể null được
+    /* // Chỗ này cần ? thì initialData mới có thể null được
     return StreamProvider<BaseEvent?>(
       initialData: null,
       create: (context) => (Provider.of<T>(context, listen: false) as BaseBloc)
@@ -37,6 +36,11 @@ class _BlocListenerState<T> extends State<BlocListener> {
       child: Consumer<BaseEvent?>(
         builder: (context, value, child) => widget.child,
       ),
-    );
+    ); */
+
+    // Bên trên là vô nghĩa, vì ở didChangeDependencies đã gán giá trị listen để
+    // gọi widget.listener(event); rồi mà
+    // Đã test thử và vẫn chạy ok
+    return widget.child;
   }
 }
