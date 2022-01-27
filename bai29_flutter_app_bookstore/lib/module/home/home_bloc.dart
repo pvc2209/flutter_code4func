@@ -3,11 +3,15 @@ import 'package:bai29_flutter_app_bookstore/base/base_event.dart';
 import 'package:bai29_flutter_app_bookstore/data/repo/order_repo.dart';
 import 'package:bai29_flutter_app_bookstore/data/repo/product_repo.dart';
 import 'package:bai29_flutter_app_bookstore/event/add_to_cart_event.dart';
+import 'package:bai29_flutter_app_bookstore/shared/model/product.dart';
+import 'package:bai29_flutter_app_bookstore/shared/model/shopping_cart.dart';
 import 'package:rxdart/rxdart.dart';
 
 class HomeBloc extends BaseBloc {
   final ProductRepo _productRepo;
   final OrderRepo _orderRepo;
+
+  var _shoppingCart = ShoppingCart();
 
   static HomeBloc? _instance;
 
@@ -30,10 +34,10 @@ class HomeBloc extends BaseBloc {
       : _productRepo = productRepo,
         _orderRepo = orderRepo;
 
-  final _shoppingCartSubject = BehaviorSubject<AddToCartEvent>();
+  final _shoppingCartSubject = BehaviorSubject<ShoppingCart>();
 
-  Stream<AddToCartEvent> get shoppingCartStream => _shoppingCartSubject.stream;
-  Sink<AddToCartEvent> get shoppingCartSink => _shoppingCartSubject.sink;
+  Stream<ShoppingCart> get shoppingCartStream => _shoppingCartSubject.stream;
+  Sink<ShoppingCart> get shoppingCartSink => _shoppingCartSubject.sink;
 
   @override
   void dispatchEvent(BaseEvent event) {
@@ -44,13 +48,36 @@ class HomeBloc extends BaseBloc {
     }
   }
 
-  static int count = 0;
   void handleAddToCartEvent(AddToCartEvent event) {
-    ++count;
-    print(count);
+    _orderRepo.addToCart(event.product).then((shoppingCart) {
+      shoppingCart.orderId = _shoppingCart.orderId;
 
-    event.count = count;
-    shoppingCartSink.add(event);
+      shoppingCartSink.add(shoppingCart);
+    }, onError: (e) {
+      // TODO: giải quyết lỗi tương tự cách làm với user repo
+    });
+  }
+
+  void getShoppingCartInfo() {
+    Stream<ShoppingCart>.fromFuture(_orderRepo.getShoppingCartInfo()).listen(
+        (shoppingCart) {
+      _shoppingCart = shoppingCart;
+
+      // Demo delay để test trường hợp cart == null bên home_page.dart
+      Future.delayed(const Duration(seconds: 3), () {
+        shoppingCartSink.add(shoppingCart);
+      });
+    }, onError: (e) {
+      // TODO: giải quyết lỗi tương tự cách làm với user repo
+    });
+  }
+
+  Stream<List<Product>> getProductList() {
+    // Test delay 5s để xem CircularProgressIndicator có ok ko?
+    // return Stream<List<Product>>.fromFuture(Future.delayed(
+    //     const Duration(seconds: 5), () => _productRepo.getProductList()));
+
+    return Stream<List<Product>>.fromFuture(_productRepo.getProductList());
   }
 
   @override
