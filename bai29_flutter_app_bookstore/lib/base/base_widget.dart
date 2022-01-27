@@ -28,21 +28,21 @@ class PageContainer extends StatelessWidget {
   // chả hiểu sao lúc ấy không gán child: child mà view vẫn hiển thị lên :v
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          title,
-          style: TextStyle(color: AppColor.blue),
+    return MultiProvider(
+      providers: [
+        ...di,
+        ...bloc,
+      ],
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text(
+            title,
+            style: TextStyle(color: AppColor.blue),
+          ),
+          actions: actions,
         ),
-        actions: actions,
-      ),
-      body: MultiProvider(
-        providers: [
-          ...di,
-          ...bloc,
-        ],
-        child: child,
+        body: child,
       ),
     );
   }
