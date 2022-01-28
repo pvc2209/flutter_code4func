@@ -59,6 +59,8 @@ class HomeBloc extends BaseBloc {
   }
 
   void getShoppingCartInfo() {
+    // Ko hiểu sao phải dùng Stream ở đây, chỉ cần dùng .then là đc rồi mà.
+    /*
     Stream<ShoppingCart>.fromFuture(_orderRepo.getShoppingCartInfo()).listen(
         (shoppingCart) {
       _shoppingCart = shoppingCart;
@@ -67,6 +69,14 @@ class HomeBloc extends BaseBloc {
       Future.delayed(const Duration(seconds: 3), () {
         shoppingCartSink.add(shoppingCart);
       });
+    }, onError: (e) {
+    });
+    */
+
+    _orderRepo.getShoppingCartInfo().then((shoppingCart) {
+      _shoppingCart = shoppingCart;
+
+      shoppingCartSink.add(shoppingCart);
     }, onError: (e) {
       // TODO: giải quyết lỗi tương tự cách làm với user repo
     });
