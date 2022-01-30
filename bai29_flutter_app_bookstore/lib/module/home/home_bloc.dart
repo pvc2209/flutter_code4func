@@ -36,8 +36,8 @@ class HomeBloc extends BaseBloc {
 
   final _shoppingCartSubject = BehaviorSubject<ShoppingCart>();
 
-  Stream<ShoppingCart?> get shoppingCartStream => _shoppingCartSubject.stream;
-  Sink<ShoppingCart?> get shoppingCartSink => _shoppingCartSubject.sink;
+  Stream<ShoppingCart> get shoppingCartStream => _shoppingCartSubject.stream;
+  Sink<ShoppingCart> get shoppingCartSink => _shoppingCartSubject.sink;
 
   @override
   void dispatchEvent(BaseEvent event) {
