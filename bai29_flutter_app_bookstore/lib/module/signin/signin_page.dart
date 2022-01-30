@@ -44,6 +44,8 @@ class SignInFormWidget extends StatefulWidget {
 }
 
 class _SignInFormWidgetState extends State<SignInFormWidget> {
+  bool _isObscure = true;
+
   final _txtPhoneController = TextEditingController();
   final _txtPassController = TextEditingController();
 
@@ -163,20 +165,29 @@ class _SignInFormWidgetState extends State<SignInFormWidget> {
               bloc.passSink.add(text);
             },
             controller: _txtPassController,
-            obscureText: true,
+            obscureText: _isObscure,
             cursorColor: Colors.black,
             decoration: InputDecoration(
-              errorText: message.isEmpty ? null : message,
-              icon: Icon(
-                Icons.lock,
-                color: AppColor.blue,
-              ),
-              hintText: "Password",
-              labelText: "Password",
-              labelStyle: TextStyle(
-                color: AppColor.blue,
-              ),
-            ),
+                errorText: message.isEmpty ? null : message,
+                icon: Icon(
+                  Icons.lock,
+                  color: AppColor.blue,
+                ),
+                hintText: "Password",
+                labelText: "Password",
+                labelStyle: TextStyle(
+                  color: AppColor.blue,
+                ),
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _isObscure ? Icons.visibility : Icons.visibility_off,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _isObscure = !_isObscure;
+                    });
+                  },
+                )),
           ),
         ),
       ),

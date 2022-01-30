@@ -88,22 +88,31 @@ class _CartWidgetState extends State<CartWidget> {
         child: Consumer<ShoppingCart?>(
           builder: (context, cart, child) => Container(
             margin: const EdgeInsets.only(top: 15, right: 20),
-            child: cart == null
+            child: (cart == null || cart.orderId == "")
                 ? const Icon(
                     Icons.shopping_cart,
                     size: 30,
                   )
-                : Badge(
-                    badgeContent: Text(
-                      "${cart.total}",
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
+                : GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, "/checkout",
+                              arguments: cart.orderId)
+                          .then((_) {
+                        context.read<HomeBloc>().getShoppingCartInfo();
+                      });
+                    },
+                    child: Badge(
+                      badgeContent: Text(
+                        "${cart.total}",
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    child: const Icon(
-                      Icons.shopping_cart,
-                      size: 30,
+                      child: const Icon(
+                        Icons.shopping_cart,
+                        size: 30,
+                      ),
                     ),
                   ),
           ),
@@ -197,6 +206,8 @@ class BookCard extends StatelessWidget {
                     children: [
                       Text(
                         product.productName,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           fontSize: 22.0,
                         ),

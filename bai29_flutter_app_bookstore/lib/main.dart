@@ -1,3 +1,4 @@
+import 'package:bai29_flutter_app_bookstore/module/checkout/checkout_page.dart';
 import 'package:bai29_flutter_app_bookstore/module/home/home_page.dart';
 import 'package:bai29_flutter_app_bookstore/module/signin/signin_page.dart';
 import 'package:bai29_flutter_app_bookstore/module/signup/signup_page.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         "/sign-in": (context) => const SignInPage(),
         "/sign-up": (context) => const SignUpPage(),
         "/home": (context) => const HomePage(),
+        "/checkout": (context) => const CheckoutPage(),
       },
     );
   }

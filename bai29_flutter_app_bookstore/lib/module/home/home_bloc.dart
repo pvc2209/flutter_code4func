@@ -36,8 +36,8 @@ class HomeBloc extends BaseBloc {
 
   final _shoppingCartSubject = BehaviorSubject<ShoppingCart>();
 
-  Stream<ShoppingCart> get shoppingCartStream => _shoppingCartSubject.stream;
-  Sink<ShoppingCart> get shoppingCartSink => _shoppingCartSubject.sink;
+  Stream<ShoppingCart?> get shoppingCartStream => _shoppingCartSubject.stream;
+  Sink<ShoppingCart?> get shoppingCartSink => _shoppingCartSubject.sink;
 
   @override
   void dispatchEvent(BaseEvent event) {
@@ -50,7 +50,7 @@ class HomeBloc extends BaseBloc {
 
   void handleAddToCartEvent(AddToCartEvent event) {
     _orderRepo.addToCart(event.product).then((shoppingCart) {
-      shoppingCart.orderId = _shoppingCart.orderId;
+      _shoppingCart.orderId = shoppingCart.orderId;
 
       shoppingCartSink.add(shoppingCart);
     }, onError: (e) {
@@ -76,9 +76,9 @@ class HomeBloc extends BaseBloc {
     _orderRepo.getShoppingCartInfo().then((shoppingCart) {
       _shoppingCart = shoppingCart;
 
-      shoppingCartSink.add(shoppingCart);
+      shoppingCartSink.add(_shoppingCart);
     }, onError: (e) {
-      // TODO: giải quyết lỗi tương tự cách làm với user repo
+      shoppingCartSink.add(ShoppingCart());
     });
   }
 
