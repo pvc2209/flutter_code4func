@@ -56,7 +56,7 @@ class _ShoppingCartInfoWidgetState extends State<ShoppingCartInfoWidget> {
   Widget build(BuildContext context) {
     String orderId = ModalRoute.of(context)!.settings.arguments.toString();
 
-    return Provider<CheckoutBloc>(
+    return ChangeNotifierProvider<CheckoutBloc>(
       create: (context) => CheckoutBloc(
         orderRepo: Provider.of<OrderRepo>(context, listen: false),
         orderId: orderId,

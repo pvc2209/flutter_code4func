@@ -74,7 +74,7 @@ class _SignInFormWidgetState extends State<SignInFormWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Provider<SignInBloc>(
+    return ChangeNotifierProvider<SignInBloc>(
       create: (context) => SignInBloc(
         userRepo: Provider.of<UserRepo>(context, listen: false),
       ),

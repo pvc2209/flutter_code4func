@@ -19,9 +19,10 @@ import 'package:bai29_flutter_app_bookstore/event/signin_event.dart';
 import 'package:bai29_flutter_app_bookstore/event/signin_fail_event.dart';
 import 'package:bai29_flutter_app_bookstore/shared/model/user_data.dart';
 import 'package:bai29_flutter_app_bookstore/shared/widget/validation.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:rxdart/rxdart.dart';
 
-class SignInBloc extends BaseBloc {
+class SignInBloc extends BaseBloc with ChangeNotifier {
   // BehaviorSubject là 1 class của thư viện rxdart
   // tương đương streamController mà thôi (vì nó kế thừa từ StreamController)
   // các BehaviorSubject giúp gửi thông tin ngược lại cho widget

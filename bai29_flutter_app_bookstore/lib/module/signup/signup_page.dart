@@ -80,7 +80,7 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Provider<SignUpBloc>(
+    return ChangeNotifierProvider<SignUpBloc>(
       create: (context) => SignUpBloc(
         userRepo: Provider.of<UserRepo>(context, listen: false),
       ),

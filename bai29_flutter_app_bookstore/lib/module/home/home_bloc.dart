@@ -5,9 +5,10 @@ import 'package:bai29_flutter_app_bookstore/data/repo/product_repo.dart';
 import 'package:bai29_flutter_app_bookstore/event/add_to_cart_event.dart';
 import 'package:bai29_flutter_app_bookstore/shared/model/product.dart';
 import 'package:bai29_flutter_app_bookstore/shared/model/shopping_cart.dart';
+import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
 
-class HomeBloc extends BaseBloc {
+class HomeBloc extends BaseBloc with ChangeNotifier {
   final ProductRepo _productRepo;
   final OrderRepo _orderRepo;
 

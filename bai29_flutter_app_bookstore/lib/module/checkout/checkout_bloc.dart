@@ -5,9 +5,10 @@ import 'package:bai29_flutter_app_bookstore/event/confirm_order_event.dart';
 import 'package:bai29_flutter_app_bookstore/event/pop_event.dart';
 import 'package:bai29_flutter_app_bookstore/event/update_cart_event.dart';
 import 'package:bai29_flutter_app_bookstore/shared/model/order.dart';
+import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
 
-class CheckoutBloc extends BaseBloc {
+class CheckoutBloc extends BaseBloc with ChangeNotifier {
   final OrderRepo _orderRepo;
   final String _orderId;
 
@@ -56,6 +57,9 @@ class CheckoutBloc extends BaseBloc {
 
   @override
   void dispose() {
+    print("Checkout dispose!!!");
+
     super.dispose();
+    _orderSubject.close();
   }
 }

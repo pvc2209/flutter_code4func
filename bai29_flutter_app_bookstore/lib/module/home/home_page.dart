@@ -51,7 +51,7 @@ class ShoppingCartWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Provider<HomeBloc>(
+    return ChangeNotifierProvider<HomeBloc>(
       create: (context) => HomeBloc.getInstance(
         productRepo: Provider.of<ProductRepo>(context, listen: false),
         orderRepo: Provider.of<OrderRepo>(context, listen: false),
@@ -127,7 +127,7 @@ class ProductListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Provider<HomeBloc>(
+    return ChangeNotifierProvider<HomeBloc>(
       create: (context) => HomeBloc.getInstance(
         productRepo: Provider.of<ProductRepo>(context, listen: false),
         orderRepo: Provider.of<OrderRepo>(context, listen: false),
