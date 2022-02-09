@@ -2,6 +2,7 @@ import 'package:bai29_flutter_app_bookstore/module/checkout/checkout_page.dart';
 import 'package:bai29_flutter_app_bookstore/module/home/home_page.dart';
 import 'package:bai29_flutter_app_bookstore/module/signin/signin_page.dart';
 import 'package:bai29_flutter_app_bookstore/module/signup/signup_page.dart';
+import 'package:bai29_flutter_app_bookstore/module/splash/splash.dart';
 import 'package:bai29_flutter_app_bookstore/shared/widget/app_color.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
       // home: const SignInPage(),
       initialRoute: "/",
       routes: {
-        "/": (context) => const SignInPage(),
+        "/": (context) => const Splash(),
         "/sign-in": (context) => const SignInPage(),
         "/sign-up": (context) => const SignUpPage(),
         "/home": (context) => const HomePage(),
