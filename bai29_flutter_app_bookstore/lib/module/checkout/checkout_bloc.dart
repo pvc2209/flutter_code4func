@@ -5,10 +5,9 @@ import 'package:bai29_flutter_app_bookstore/event/confirm_order_event.dart';
 import 'package:bai29_flutter_app_bookstore/event/pop_event.dart';
 import 'package:bai29_flutter_app_bookstore/event/update_cart_event.dart';
 import 'package:bai29_flutter_app_bookstore/shared/model/order.dart';
-import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
 
-class CheckoutBloc extends BaseBloc with ChangeNotifier {
+class CheckoutBloc extends BaseBloc {
   final OrderRepo _orderRepo;
   final String _orderId;
 

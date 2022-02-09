@@ -80,10 +80,11 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<SignUpBloc>(
+    return Provider<SignUpBloc>(
       create: (context) => SignUpBloc(
         userRepo: Provider.of<UserRepo>(context, listen: false),
       ),
+      dispose: (context, bloc) => bloc.dispose(),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25),
         child: Consumer<SignUpBloc>(

@@ -74,10 +74,11 @@ class _SignInFormWidgetState extends State<SignInFormWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<SignInBloc>(
+    return Provider<SignInBloc>(
       create: (context) => SignInBloc(
         userRepo: Provider.of<UserRepo>(context, listen: false),
       ),
+      dispose: (context, bloc) => bloc.dispose(),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25),
         child: Consumer<SignInBloc>(
